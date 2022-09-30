@@ -4,7 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:movie_app_api/models/genre.dart';
 import 'package:movie_app_api/models/movie.dart';
+import 'package:movie_app_api/models/movie_detail.dart';
+import 'package:movie_app_api/models/movie_image.dart';
 import 'package:movie_app_api/models/person.dart';
+
+import '../models/cast.dart';
 
 class ApiService {
   final Dio _dio = Dio();
@@ -30,18 +34,18 @@ class ApiService {
   }
 
   Future<List<Movie>> getMovieByGenre(int movieId) async {
-    // try {
-    final Response response =
-        await _dio.get('$baseUrl/discover/movie?with_genres=$movieId&$apiKey');
+    try {
+      final Response response = await _dio
+          .get('$baseUrl/discover/movie?with_genres=$movieId&$apiKey');
 
-    List movies = response.data['results'] as List;
+      List movies = response.data['results'] as List;
 
-    List<Movie> movieList = movies.map((e) => Movie.fromJson(e)).toList();
+      List<Movie> movieList = movies.map((e) => Movie.fromJson(e)).toList();
 
-    return movieList;
-    // } catch (e, stracktrace) {
-    //   throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
-    // }
+      return movieList;
+    } catch (e, stracktrace) {
+      throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
+    }
   }
 
   Future<List<Genre>> getGenreList() async {
@@ -68,5 +72,57 @@ class ApiService {
     } catch (e, stracktrace) {
       throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
     }
+  }
+
+  Future<MovieDetail> getMovieDetail(int movieId) async {
+    // try {
+    final Response response = await _dio.get('$baseUrl/movie/$movieId?$apiKey');
+
+    MovieDetail movieDetail = MovieDetail.fromJson(response.data);
+
+    movieDetail.trailerId = await getYoutubeId(movieId);
+
+    movieDetail.movieImage = await getMovieImage(movieId);
+
+    movieDetail.castList = await getCastList(movieId);
+    return movieDetail;
+    // } catch (e, stracktrace) {
+    //   throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
+    // }
+  }
+
+  Future<String> getYoutubeId(int id) async {
+    try {
+      final Response response =
+          await _dio.get('$baseUrl/movie/$id/videos?$apiKey');
+
+      var youtubeId = response.data['results'][0]['key'];
+      return youtubeId;
+    } catch (e, stracktrace) {
+      throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
+    }
+  }
+
+  Future<MovieImage> getMovieImage(int movieId) async {
+    try {
+      final Response response =
+          await _dio.get('$baseUrl/movie/$movieId/images?$apiKey');
+      return MovieImage.fromJson(response.data);
+    } catch (e, stracktrace) {
+      throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
+    }
+  }
+
+  Future<List<Cast>> getCastList(int movieId) async {
+    // try {
+    final Response response =
+        await _dio.get('$baseUrl/movie/$movieId/credits?$apiKey');
+
+    var list = response.data['cast'] as List;
+    List<Cast> castList = list.map((e) => Cast.fromJson(e)).toList();
+    return castList;
+    // } catch (e, stracktrace) {
+    //   throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
+    // }
   }
 }

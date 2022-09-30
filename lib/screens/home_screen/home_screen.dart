@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_api/screens/category_screen/category_screen.dart';
+import 'package:movie_app_api/screens/movie_detail_screen.dart';
 
 import '../../bloc/movie_blocs/movie_bloc.dart';
 import '../../bloc/person_bloc/person_bloc.dart';
@@ -87,7 +88,6 @@ Widget _buildBody() {
                     );
                   } else if (state is MovieLoaded) {
                     List<Movie> movies = state.movieList;
-                    print(movies.length);
 
                     return SingleChildScrollView(
                       scrollDirection: Axis.vertical,
@@ -98,7 +98,12 @@ Widget _buildBody() {
                             itemBuilder: ((context, index, realIndex) {
                               Movie movie = movies[index];
                               return GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  print(movie.id);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          MovieDetailScreen(movie: movie)));
+                                },
                                 child: Stack(
                                   alignment: Alignment.bottomLeft,
                                   children: <Widget>[
@@ -224,7 +229,7 @@ Widget _buildBody() {
                                                           child:
                                                               CachedNetworkImage(
                                                             imageUrl:
-                                                                'https://image.tmdb.org/t/p/w200${person.profilePath}',
+                                                                'https://image.tmdb.org/t/p/original/${person.profilePath}',
                                                             imageBuilder: (context,
                                                                 imageProvider) {
                                                               return Container(
@@ -350,6 +355,9 @@ Widget _buildBody() {
                   }
                 },
               ),
+              const SizedBox(
+                height: 50,
+              )
             ],
           ),
         ),

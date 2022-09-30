@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_api/bloc/genre_bloc/genre_bloc.dart';
 import 'package:movie_app_api/models/movie.dart';
+import 'package:movie_app_api/screens/movie_detail_screen.dart';
 
 import '../../bloc/genre_bloc/genre_event.dart';
 import '../../bloc/genre_bloc/genre_state.dart';
@@ -53,7 +54,6 @@ class _BuildWidgetCategoryState extends State<BuildWidgetCategory> {
                 child: CupertinoActivityIndicator(),
               );
             } else if (state is GenreLoadedState) {
-              print('Loaded State was calls');
               List<Genre> genres = state.genreList;
               return Container(
                 height: 45,
@@ -141,7 +141,7 @@ class _BuildWidgetCategoryState extends State<BuildWidgetCategory> {
                 height: 300,
                 child: ListView.separated(
                   itemCount: movieList.length,
-                  separatorBuilder: (context, index) => VerticalDivider(
+                  separatorBuilder: (context, index) => const VerticalDivider(
                     color: Colors.transparent,
                     width: 15,
                   ),
@@ -151,37 +151,45 @@ class _BuildWidgetCategoryState extends State<BuildWidgetCategory> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ClipRRect(
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                'https://image.tmdb.org/t/p/original/${movie.backdropPath}',
-                            imageBuilder: (context, imageProvider) {
-                              return Container(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    MovieDetailScreen(movie: movie)));
+                          },
+                          child: ClipRRect(
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  'https://image.tmdb.org/t/p/original/${movie.backdropPath}',
+                              imageBuilder: (context, imageProvider) {
+                                return Container(
+                                  width: 180,
+                                  height: 250,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(12),
+                                    ),
+                                    image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover),
+                                  ),
+                                );
+                              },
+                              placeholder: (context, url) => Container(
                                 width: 180,
                                 height: 250,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(12),
-                                  ),
-                                  image: DecorationImage(
-                                      image: imageProvider, fit: BoxFit.cover),
+                                child: const Center(
+                                  child: CupertinoActivityIndicator(),
                                 ),
-                              );
-                            },
-                            placeholder: (context, url) => Container(
-                              width: 180,
-                              height: 250,
-                              child: const Center(
-                                child: CupertinoActivityIndicator(),
                               ),
-                            ),
-                            errorWidget: (context, url, error) => Container(
-                              width: 190,
-                              height: 250,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/img_not_found.jpg'),
+                              errorWidget: (context, url, error) => Container(
+                                width: 190,
+                                height: 250,
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/img_not_found.jpg'),
+                                  ),
                                 ),
                               ),
                             ),
