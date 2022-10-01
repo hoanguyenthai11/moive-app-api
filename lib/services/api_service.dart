@@ -1,6 +1,3 @@
-import 'dart:collection';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:movie_app_api/models/genre.dart';
 import 'package:movie_app_api/models/movie.dart';
@@ -75,20 +72,21 @@ class ApiService {
   }
 
   Future<MovieDetail> getMovieDetail(int movieId) async {
-    // try {
-    final Response response = await _dio.get('$baseUrl/movie/$movieId?$apiKey');
+    try {
+      final Response response =
+          await _dio.get('$baseUrl/movie/$movieId?$apiKey');
 
-    MovieDetail movieDetail = MovieDetail.fromJson(response.data);
+      MovieDetail movieDetail = MovieDetail.fromJson(response.data);
 
-    movieDetail.trailerId = await getYoutubeId(movieId);
+      movieDetail.trailerId = await getYoutubeId(movieId);
 
-    movieDetail.movieImage = await getMovieImage(movieId);
+      movieDetail.movieImage = await getMovieImage(movieId);
 
-    movieDetail.castList = await getCastList(movieId);
-    return movieDetail;
-    // } catch (e, stracktrace) {
-    //   throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
-    // }
+      movieDetail.castList = await getCastList(movieId);
+      return movieDetail;
+    } catch (e, stracktrace) {
+      throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
+    }
   }
 
   Future<String> getYoutubeId(int id) async {
@@ -114,15 +112,15 @@ class ApiService {
   }
 
   Future<List<Cast>> getCastList(int movieId) async {
-    // try {
-    final Response response =
-        await _dio.get('$baseUrl/movie/$movieId/credits?$apiKey');
+    try {
+      final Response response =
+          await _dio.get('$baseUrl/movie/$movieId/credits?$apiKey');
 
-    var list = response.data['cast'] as List;
-    List<Cast> castList = list.map((e) => Cast.fromJson(e)).toList();
-    return castList;
-    // } catch (e, stracktrace) {
-    //   throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
-    // }
+      var list = response.data['cast'] as List;
+      List<Cast> castList = list.map((e) => Cast.fromJson(e)).toList();
+      return castList;
+    } catch (e, stracktrace) {
+      throw Exception('Exeption accoured $e with stacktrace: $stracktrace');
+    }
   }
 }

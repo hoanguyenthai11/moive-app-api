@@ -88,7 +88,6 @@ Widget _buildBody() {
                     );
                   } else if (state is MovieLoaded) {
                     List<Movie> movies = state.movieList;
-
                     return SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(
@@ -99,7 +98,6 @@ Widget _buildBody() {
                               Movie movie = movies[index];
                               return GestureDetector(
                                 onTap: () {
-                                  print(movie.id);
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) =>
                                           MovieDetailScreen(movie: movie)));
@@ -119,7 +117,7 @@ Widget _buildBody() {
                                                 3,
                                         width:
                                             MediaQuery.of(context).size.width,
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.fill,
                                         placeholder: (context, url) =>
                                             CupertinoActivityIndicator(),
                                         errorWidget: (context, url, error) =>
@@ -198,7 +196,7 @@ Widget _buildBody() {
                                         } else if (state is PersonLoadedState) {
                                           List<Person> personList =
                                               state.personList;
-                                          return Container(
+                                          return SizedBox(
                                             height: 110,
                                             child: ListView.separated(
                                               itemCount: personList.length,
@@ -260,9 +258,6 @@ Widget _buildBody() {
                                                                     Container(
                                                               width: 80,
                                                               height: 80,
-                                                              child: Center(
-                                                                  child:
-                                                                      CupertinoActivityIndicator()),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 borderRadius: BorderRadius
@@ -277,6 +272,9 @@ Widget _buildBody() {
                                                                       'assets/images/img_not_found.jpg'),
                                                                 ),
                                                               ),
+                                                              child: Center(
+                                                                  child:
+                                                                      CupertinoActivityIndicator()),
                                                             ),
                                                             errorWidget:
                                                                 (context, url,

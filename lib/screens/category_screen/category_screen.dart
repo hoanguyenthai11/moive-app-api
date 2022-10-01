@@ -55,7 +55,7 @@ class _BuildWidgetCategoryState extends State<BuildWidgetCategory> {
               );
             } else if (state is GenreLoadedState) {
               List<Genre> genres = state.genreList;
-              return Container(
+              return SizedBox(
                 height: 45,
                 child: ListView.separated(
                   itemCount: genres.length,
@@ -137,13 +137,13 @@ class _BuildWidgetCategoryState extends State<BuildWidgetCategory> {
               return const Center(child: CupertinoActivityIndicator());
             } else if (state is MovieLoaded) {
               List<Movie> movieList = state.movieList;
-              return Container(
+              return SizedBox(
                 height: 300,
                 child: ListView.separated(
                   itemCount: movieList.length,
                   separatorBuilder: (context, index) => const VerticalDivider(
                     color: Colors.transparent,
-                    width: 15,
+                    width: 10,
                   ),
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
@@ -175,7 +175,7 @@ class _BuildWidgetCategoryState extends State<BuildWidgetCategory> {
                                   ),
                                 );
                               },
-                              placeholder: (context, url) => Container(
+                              placeholder: (context, url) => SizedBox(
                                 width: 180,
                                 height: 250,
                                 child: const Center(
@@ -198,7 +198,7 @@ class _BuildWidgetCategoryState extends State<BuildWidgetCategory> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Container(
+                        SizedBox(
                           width: 180,
                           child: Text(
                             movie.title!.toUpperCase(),

@@ -136,13 +136,14 @@ class MovieDetailScreen extends StatelessWidget {
                         const SizedBox(
                           height: 5,
                         ),
-                        Container(
+
+                        SizedBox(
                           height: 35,
                           child: Text(
                             movieDetail.overview,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'Muli',
                             ),
                           ),
@@ -254,7 +255,7 @@ class MovieDetailScreen extends StatelessWidget {
                         //       print('${movieDetail.movieImage}');
                         //     },
                         //     child: Text('Text')),
-                        Container(
+                        SizedBox(
                           height: 155,
                           child: ListView.separated(
                             itemCount: movieDetail.movieImage!.backdrops.length,
@@ -278,7 +279,7 @@ class MovieDetailScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(8),
                                     child: CachedNetworkImage(
                                       errorWidget: (context, url, error) =>
-                                          Center(
+                                          const Center(
                                         child: Text('error'),
                                       ),
                                       placeholder: (context, url) =>
@@ -305,7 +306,7 @@ class MovieDetailScreen extends StatelessWidget {
                                 fontFamily: 'Muli',
                               ),
                         ),
-                        Container(
+                        SizedBox(
                           height: 110,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
@@ -336,7 +337,8 @@ class MovieDetailScreen extends StatelessWidget {
                                               height: 80,
                                               width: 80,
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
+                                                borderRadius:
+                                                    const BorderRadius.all(
                                                   Radius.circular(
                                                     100,
                                                   ),
@@ -349,10 +351,10 @@ class MovieDetailScreen extends StatelessWidget {
                                             );
                                           },
                                           placeholder: (context, url) =>
-                                              Container(
+                                              const SizedBox(
                                             height: 80,
                                             width: 80,
-                                            child: const Center(
+                                            child: Center(
                                               child:
                                                   CupertinoActivityIndicator(),
                                             ),
@@ -372,7 +374,7 @@ class MovieDetailScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Container(
+                                    SizedBox(
                                       width: 100,
                                       child: Center(
                                         child: Wrap(children: [
@@ -406,7 +408,7 @@ class MovieDetailScreen extends StatelessWidget {
         );
       } else {
         return Container(
-          child: Text('err'),
+          child: const Text('err'),
         );
       }
     }));
