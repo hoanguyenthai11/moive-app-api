@@ -17,4 +17,8 @@ class PersonLoadedState extends PersonState {
   List<Object?> get props => [personList];
 }
 
-class PersonErrorState extends PersonState {}
+class PersonErrorState extends PersonState {
+  String err;
+
+  PersonErrorState(this.err);
+}

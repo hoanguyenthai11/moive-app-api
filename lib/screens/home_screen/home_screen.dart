@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         BlocProvider(
           create: (_) => PersonBloc()..add(PersonStartedEvent()),
-        )
+        ),
       ],
       child: Scaffold(
         appBar: AppBar(
@@ -82,9 +82,8 @@ Widget _buildBody() {
               BlocBuilder<MovieBloc, MovieState>(
                 builder: (context, state) {
                   if (state is MovieLoading) {
-                    print('Loading state was called');
                     return const Center(
-                      child: Text('MovieLoading'),
+                      child: CupertinoActivityIndicator(),
                     );
                   } else if (state is MovieLoaded) {
                     List<Movie> movies = state.movieList;
@@ -98,9 +97,11 @@ Widget _buildBody() {
                               Movie movie = movies[index];
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          MovieDetailScreen(movie: movie)));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MovieDetailScreen(movie: movie)));
                                 },
                                 child: Stack(
                                   alignment: Alignment.bottomLeft,
@@ -194,12 +195,12 @@ Widget _buildBody() {
                                             child: CupertinoActivityIndicator(),
                                           );
                                         } else if (state is PersonLoadedState) {
-                                          List<Person> personList =
+                                          List<Person> personal =
                                               state.personList;
                                           return SizedBox(
                                             height: 110,
                                             child: ListView.separated(
-                                              itemCount: personList.length,
+                                              itemCount: personal.length,
                                               scrollDirection: Axis.horizontal,
                                               separatorBuilder:
                                                   (context, index) =>
@@ -208,8 +209,7 @@ Widget _buildBody() {
                                                 width: 5,
                                               ),
                                               itemBuilder: (context, index) {
-                                                Person person =
-                                                    personList[index];
+                                                Person person = personal[index];
 
                                                 return Container(
                                                   child: Column(
@@ -224,80 +224,100 @@ Widget _buildBody() {
                                                         ),
                                                         elevation: 3,
                                                         child: ClipRRect(
-                                                          child:
-                                                              CachedNetworkImage(
-                                                            imageUrl:
-                                                                'https://image.tmdb.org/t/p/original/${person.profilePath}',
-                                                            imageBuilder: (context,
-                                                                imageProvider) {
-                                                              return Container(
-                                                                height: 80,
-                                                                width: 80,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .all(
-                                                                    Radius
-                                                                        .circular(
-                                                                            100),
-                                                                  ),
-                                                                  image:
-                                                                      DecorationImage(
+                                                          child: person
+                                                                  .profilePath
+                                                                  .isEmpty
+                                                              ? Container(
+                                                                  width: 80,
+                                                                  height: 80,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(
+                                                                            Radius.circular(50)),
                                                                     image:
-                                                                        imageProvider,
-                                                                    fit: BoxFit
-                                                                        .cover,
+                                                                        DecorationImage(
+                                                                      fit: BoxFit
+                                                                          .contain,
+                                                                      image: AssetImage(
+                                                                          'assets/images/img_not_found.jpg'),
+                                                                    ),
                                                                   ),
+                                                                )
+                                                              : CachedNetworkImage(
+                                                                  errorWidget: (context,
+                                                                          url,
+                                                                          error) =>
+                                                                      Container(
+                                                                    width: 80,
+                                                                    height: 80,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(50)),
+                                                                      image:
+                                                                          DecorationImage(
+                                                                        fit: BoxFit
+                                                                            .contain,
+                                                                        image: AssetImage(
+                                                                            'assets/images/img_not_found.jpg'),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  imageUrl:
+                                                                      'https://image.tmdb.org/t/p/w300/${person.profilePath}',
+                                                                  imageBuilder:
+                                                                      (context,
+                                                                          imageProvider) {
+                                                                    // print(
+                                                                    //     'imageprovider $imageProvider');
+                                                                    return Container(
+                                                                      height:
+                                                                          80,
+                                                                      width: 80,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              100),
+                                                                        ),
+                                                                        image:
+                                                                            DecorationImage(
+                                                                          image:
+                                                                              imageProvider,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  placeholder:
+                                                                      (context,
+                                                                          url) {
+                                                                    return Container(
+                                                                      width: 80,
+                                                                      height:
+                                                                          80,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(50)),
+                                                                        image:
+                                                                            DecorationImage(
+                                                                          fit: BoxFit
+                                                                              .contain,
+                                                                          image:
+                                                                              AssetImage('assets/images/img_not_found.jpg'),
+                                                                        ),
+                                                                      ),
+                                                                      child: Center(
+                                                                          child:
+                                                                              CupertinoActivityIndicator()),
+                                                                    );
+                                                                  },
                                                                 ),
-                                                              );
-                                                            },
-                                                            placeholder:
-                                                                (context,
-                                                                        url) =>
-                                                                    Container(
-                                                              width: 80,
-                                                              height: 80,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            50)),
-                                                                image:
-                                                                    DecorationImage(
-                                                                  fit: BoxFit
-                                                                      .contain,
-                                                                  image: AssetImage(
-                                                                      'assets/images/img_not_found.jpg'),
-                                                                ),
-                                                              ),
-                                                              child: Center(
-                                                                  child:
-                                                                      CupertinoActivityIndicator()),
-                                                            ),
-                                                            errorWidget:
-                                                                (context, url,
-                                                                        error) =>
-                                                                    Container(
-                                                              width: 80,
-                                                              height: 80,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            50)),
-                                                                image:
-                                                                    DecorationImage(
-                                                                  fit: BoxFit
-                                                                      .contain,
-                                                                  image: AssetImage(
-                                                                      'assets/images/img_not_found.jpg'),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
                                                         ),
                                                       ),
                                                       Container(
@@ -325,7 +345,7 @@ Widget _buildBody() {
                                                                     .black45,
                                                                 fontSize: 8,
                                                                 fontFamily:
-                                                                    'Mili'),
+                                                                    'Muli'),
                                                           ),
                                                         ),
                                                       ),

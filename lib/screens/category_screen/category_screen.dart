@@ -175,10 +175,10 @@ class _BuildWidgetCategoryState extends State<BuildWidgetCategory> {
                                   ),
                                 );
                               },
-                              placeholder: (context, url) => SizedBox(
+                              placeholder: (context, url) => const SizedBox(
                                 width: 180,
                                 height: 250,
-                                child: const Center(
+                                child: Center(
                                   child: CupertinoActivityIndicator(),
                                 ),
                               ),

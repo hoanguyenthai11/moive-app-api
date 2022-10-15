@@ -333,6 +333,7 @@ class MovieDetailScreen extends StatelessWidget {
                                               'https://image.tmdb.org/t/p/w200/${cast.profilePath}',
                                           imageBuilder:
                                               (context, imageProvider) {
+                                            // print(imageProvider);
                                             return Container(
                                               height: 80,
                                               width: 80,
@@ -350,27 +351,32 @@ class MovieDetailScreen extends StatelessWidget {
                                               ),
                                             );
                                           },
-                                          placeholder: (context, url) =>
-                                              const SizedBox(
-                                            height: 80,
-                                            width: 80,
-                                            child: Center(
-                                              child:
-                                                  CupertinoActivityIndicator(),
-                                            ),
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Container(
-                                            width: 80,
-                                            height: 80,
-                                            decoration: const BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                  'assets/images/img_not_found.jpg',
+                                          placeholder: (context, url) {
+                                            // print('This is $url ');
+                                            return const SizedBox(
+                                              height: 80,
+                                              width: 80,
+                                              child: Center(
+                                                child:
+                                                    CupertinoActivityIndicator(),
+                                              ),
+                                            );
+                                          },
+                                          errorWidget: (context, url, error) {
+                                            return Container(
+                                              width: 80,
+                                              height: 80,
+                                              decoration: const BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(50)),
+                                                image: DecorationImage(
+                                                  fit: BoxFit.contain,
+                                                  image: AssetImage(
+                                                      'assets/images/img_not_found.jpg'),
                                                 ),
                                               ),
-                                            ),
-                                          ),
+                                            );
+                                          },
                                         ),
                                       ),
                                     ),
@@ -380,6 +386,7 @@ class MovieDetailScreen extends StatelessWidget {
                                         child: Wrap(children: [
                                           Text(
                                             cast.character.toUpperCase(),
+                                            maxLines: 2,
                                             style: const TextStyle(
                                               color: Colors.black54,
                                               fontSize: 8,
