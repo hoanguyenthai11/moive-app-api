@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:equatable/equatable.dart';
-import 'package:movie_app_api/models/movie.dart';
 import 'package:movie_app_api/models/screen_shot.dart';
 
 class MovieImage extends Equatable {
@@ -12,7 +9,7 @@ class MovieImage extends Equatable {
 
   factory MovieImage.fromJson(Map<String, dynamic> json) {
     if (json == null) {
-      return MovieImage(backdrops: [], posters: []);
+      return const MovieImage(backdrops: [], posters: []);
     }
 
     return MovieImage(

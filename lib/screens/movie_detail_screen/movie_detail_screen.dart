@@ -8,9 +8,9 @@ import 'package:movie_app_api/bloc/movie_detail_bloc/movie_detail_state.dart';
 import 'package:movie_app_api/models/screen_shot.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../models/cast.dart';
-import '../models/movie.dart';
-import '../models/movie_detail.dart';
+import '../../models/cast.dart';
+import '../../models/movie.dart';
+import '../../models/movie_detail.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   final Movie movie;

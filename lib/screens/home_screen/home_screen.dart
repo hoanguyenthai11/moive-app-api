@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_api/screens/category_screen/category_screen.dart';
-import 'package:movie_app_api/screens/movie_detail_screen.dart';
+import 'package:movie_app_api/screens/movie_detail_screen/movie_detail_screen.dart';
 
 import '../../bloc/movie_blocs/movie_bloc.dart';
 import '../../bloc/person_bloc/person_bloc.dart';

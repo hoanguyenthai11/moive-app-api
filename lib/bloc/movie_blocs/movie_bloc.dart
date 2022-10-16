@@ -15,6 +15,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
         final service = ApiService();
         emit(MovieLoading());
         List<Movie> movieList;
+        print(event.movieId);
         try {
           if (event.movieId == 0) {
             movieList = await service.getNowPlayingMovie();
